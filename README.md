@@ -1,11 +1,13 @@
-# Workshop #1: Dynamic HTML
-In this workshop, you will learn how to update dynamically the HTML of your web application. We will use the [Shop Homepage](https://startbootstrap.com/template/shop-homepage) template from the [Start Bootstrap website](https://startbootstrap.com/). 
+# Tutorial: Creating a Shopping Cart
+In this tutorial, you will learn how to add basic cart features to your web application.
+
+In this tutorial, we will use the [Shop Homepage](https://startbootstrap.com/template/shop-homepage) template from the [Start Bootstrap website](https://startbootstrap.com/). 
 
 ## Web Application Overview
 
 While New Zealand is well-known for its stunning landscapes, travelers often know overlook cultural crafts made by the indigenous people of New Zealand, the Maori. The purpose of this web application is to promote Maori handmade crafts as products available for purchase online.  
 
-## Task 1: Add jQuery
+## Part I: Add jQuery
 
 In the index.html file, add the latest version of jQuery to your application using a Google's CDN: 
 
@@ -31,7 +33,7 @@ $(document).ready(function(){
 });    
 ```
 
-## Task 2: Create a data structure for the products
+## Part II: Create a data structure for the products
 
 The following data structure contains all the data of the products promoted by the application:
 
@@ -76,7 +78,7 @@ const PRODUCTS = {
 };
 ```
 
-## Task 3: Display the products dynamically
+## Part III: Display the products dynamically
 
 Before adding cart functionality, display the product dynamically on the application, so your code does not depend on the number of products or any product in specific.
 
@@ -90,17 +92,6 @@ This function generates the HTML for displaying one product given its id in the
 PRODUCTS object using the clone-find-update approach.
 
 ```javascript
-/**
-    Generates the HTML for displaying one product given its id in the
-    PRODUCTS object. This function follows a clone-find-update approach:
-    1. CLONE an HTML element to use as a template
-    2. FIND the elements using selectors
-    3. UPDATE the elements to customize their content
-
-    @param    {number} productId An identifier in the PRODUCTS object to display
-
-    @returns  {string} A string with the HTML of the product.
-*/
 function getProductHTML(productId) {
     // Obtain product data from the PRODUCTS object
     const product = PRODUCTS[productId];   
@@ -108,8 +99,8 @@ function getProductHTML(productId) {
     // CLONE an HTML element to use as a template
     const productHTML = $( "#product-template" ).clone();
 
-    // Delete id to avoid duplicates
-    productHTML.prop('id', '');
+     // Delete id to avoid duplicates
+    productHTML.prop('id', '');   
 
     // FIND and UPDATE the product's name
     productHTML.find(".product-name").text(product.name);
@@ -120,50 +111,28 @@ function getProductHTML(productId) {
         prop("src", product.image).
         prop("alt", product.name);
 
-     // Customize the product's reviews    
-    const starHTML = productHTML.find(".product-reviews").find("div");
-    for(let starsCounter = 2; starsCounter <= product.stars; starsCounter++) {
-        const newStartHTML = starHTML.clone();
-        productHTML.find(".product-reviews").append(newStartHTML);
-    }
-
     // Remove .d-none to make the product visible
     productHTML.removeClass("d-none");
 
     return productHTML;
 }
-
 ```
 
 Create a function that generates the HTML for displaying each product by calling `.getProductHTML()`:
 
 ```javascript
-/**
-    Show all products in the application's homepage
-
-    @param    {array} products An array of objects containing all the products to be displayed
-    @returns  No value.
-*/
-function showProducts(products) {
-    // Sort products by the number of stars in descending order
-    products.sort((product1, product2) => product2.stars - product1.stars);
-
+// Show all products
+function showProducts() {
     // Traverse the products object
-    for(let product of products) {
+    for(let productId in PRODUCTS) {
+        const product = PRODUCTS[productId];
 
         // Generate each product's HTML
         const productHTML = getProductHTML(product.id);
 
-        /* Customize the product's "Add to cart" button
-           Since we are updating the same object several times, 
-           we can use jQuery's chaining feature. 
-        */
-        productHTML.find(".product-action").
-            text("Add to cart");
-
-        /* Finally, append the cutomized HTML for each product to the products
+        /* Append the cutomized HTML for each product to the products
            container on the webpage */
-        $('#products').append(productHTML);
+        $("#products").append(productHTML);
     }
 }
 ```
@@ -171,12 +140,121 @@ function showProducts(products) {
 Call `.showProducts()`:
 
 ```javascript
-/* .ready(): https://api.jquery.com/ready/
-    The .ready() method allow us to run JavaScript code as soon as the page's Document Object Model (DOM)
-    becomes SAFE to manipulate. 
-*/
 $(document).ready(function(){
-    showProducts(Object.values(PRODUCTS));
+
+    // By default, show all products
+    showProducts();
 });
 ```
 
+## Part IV: Add add to cart functionality
+
+Use an array to represent the products added to the cart. Each item in this array is a number representing the product's id in the PRODUCTS object:
+
+```javascript
+const CART = [];
+```
+
+Create an event handler that add products to the cart:
+
+```javascript
+// Adds a product to the cart
+function addProduct() {
+    // Use data property added in the showProducts function to identify the product
+    const productId = $(this).data("product-id");
+
+    CART.push(productId); 
+}
+```
+
+Customize the product HTML in `showProducts()` to register the event handler on the "Add to cart" button:
+
+```javascript
+...
+
+productHTML.find(".product-action").
+    text("Add to cart").
+    on("click", addProduct).
+    // Add this data property to identify the product when it is added to the cart
+    data("product-id", product.id);
+
+...
+```
+
+Create a function that displays the card as a modal window:
+
+```javascript
+function showCart() {
+    // Empty the cart every time it is displayed to ensure with the CART array  
+    $("#products-cart").empty();
+
+    // Traverse the CART array to access all products in the cart
+    for(let i = 0; i < CART.length; i++) {
+
+        // Generate each product's HTML
+        const productHTML = getProductHTML(CART[i]);
+
+        /* Append the cutomized HTML for each product to the cart
+           container on the webpage */
+        $("#products-cart").append(productHTML);
+    }
+}
+```
+
+Register `showCart()` as an event handler that responds to user clicks on the cart icon:
+
+```javascript
+$(document).ready(function(){
+
+    // By default, show all products
+    showProducts();
+
+    // Register event handler for updating the cart when the user clicks the "Cart" button
+    $("#show-cart").on("click", showCart);
+});
+```
+
+## Part V: Add remove from cart functionality
+
+Create an event handler that remove products from the cart:
+
+```javascript
+function removeProduct() {
+    // Use data property added in the showCart function to identify the product
+    const productCartIndex = $(this).data("product-cart-index");
+
+    CART.splice(productCartIndex, 1);
+
+    // Display the entire cart again
+    showCart();
+}
+```
+
+Customize the product HTML in `showCart()` to register the event handler on the "Remove" button:
+
+```javascript
+...
+
+// Customize the product's "Remove" button
+productHTML.find(".product-action").
+    text("Remove").
+    on("click", removeProduct).
+    // Add this data property to identify the product when it is removed from the cart
+    data("product-cart-index", i);
+
+...
+```
+
+## Part VI: Update cart total indicator
+
+Create a function that updates the number of items in the cart:
+
+```javascript
+// Update cart items indicator at the top of the webpage
+function updateCartTotal() {
+    // Update number of items
+    $("#cart-total").text(CART.length);
+}
+```
+
+Call `updateCartTotal()` from `addProduct()` and `removeProduct()`.
