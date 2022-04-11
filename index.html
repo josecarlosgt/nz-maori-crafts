@@ -1,3 +1,7 @@
+<!----------------------------------------------------+
+ |                 Maori Fine Crafts Site             |
+ | CIS 5620: Authoring Websites                       |
+ +---------------------------------------------------->
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -26,13 +30,6 @@
                             <a class="nav-link active" aria-current="page" href="#start">Start</a>
                         </li>
                     </ul>
-                    <form class="d-flex">
-                        <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#feedbackModal" id="show-cart" type="button">
-                            <i class="bi-cart2 me-1"></i>
-                            Cart
-                            <span class="badge bg-success text-white ms-1 rounded-pill" id="cart-total">0</span>
-                        </button>
-                    </form>
                 </div>
             </div>
         </nav>
@@ -45,19 +42,6 @@
                 </div>
             </div>
         </header>
-
-        <!-- Section: search-->
-        <section id="search" class="pt-1 pb-4">
-            <div class="container px-4">
-                <div class="row text-center mt-3">
-                    <form>
-                        <input class="w-100 form-control-lg" type="text" id="searchQuery"
-                        placeholder="Type to start searching">
-                    </form>
-                </div>
-            </div>
-        </section>
-
         <!-- Section: products-->
         <section>
             <div class="container px-4">
@@ -69,34 +53,6 @@
         <footer class="py-5 bg-success">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; CIS 3610 Fall 2021</p></div>
         </footer>
-        <!-- Cart Modal-->
-        <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header bg-success bg-gradient p-4">
-                        <h5 class="modal-title font-alt text-white" id="feedbackModalLabel">Shopping Cart</h5>
-                        <button class="btn-close btn-close-white" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body border-0 p-4">
-                        <form>
-                            <div class="container px-4 mt-5">
-                                <div class="row justify-content-center row-cols-1" id="products-cart">
-                                </div>
-                                <div class="row justify-content-center" id="empty-cart">
-                                    <div class="col mb-5 text-center">
-                                        Cart is empty!
-                                    </div>
-                                 </div>
-                            </div>
-                            <div class="text-center">
-                                <button class="btn btn-success rounded-pill btn-lg disabled w-100" id="submitButton" type="submit">Submit</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End of Feedback Modal-->
         <!-- Product Template -->
         <div class="col mb-5 d-none" id="product-template">
             <div class="card h-100 text-center">

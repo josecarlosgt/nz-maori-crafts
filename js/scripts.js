@@ -1,4 +1,13 @@
-// Project JS
+/*********************************************************************
+ *                          Maori Fine Crafts Site                   *
+ * CIS 5620: Authoring Websites                                      *
+ *********************************************************************/
+
+/* 
+  Avoid creating global variables by implementing all the application
+  inside an Immediately Invoked Function Expression (IIFE).
+*/
+(() => {
 
 // Data structure containing all product data displayed on the webpage
 const PRODUCTS = {
@@ -40,31 +49,16 @@ const PRODUCTS = {
     }
 };
 
-/* An array representing products added to the cart. Each item in this array is a number representing the
-   product's id in the PRODUCTS object */
-const CART = [];
-
-/* .ready(): https://api.jquery.com/ready/
-    The .ready() method allow us to run JavaScript code as soon as the page's Document Object Model (DOM)
-    becomes SAFE to manipulate. 
-*/
-$(document).ready(function(){
-
-    // By default, show top 3 products
-    showProducts(Object.values(PRODUCTS));
-
-    // Register event handler for updating the cart when the user clicks the "Cart" button
-    $("#show-cart").on("click", showCart);
-
-    // Register event handler for live search when the user types something on the "search" input
-    $("#searchQuery").on("keyup", search);
-});
-
-/* Generates the HTML for displaying one product given its id in the
-   PRODUCTS object. This function follows the clone-find-update approach:
+ /**
+    Generates the HTML for displaying one product given its id in the
+    PRODUCTS object. This function follows a clone-find-update approach:
     1. CLONE an HTML element to use as a template
     2. FIND the elements using selectors
     3. UPDATE the elements to customize their content
+
+    @param    {number} productId An identifier in the PRODUCTS object to display
+
+    @returns  {string} A string with the HTML of the product.
 */
 function getProductHTML(productId) {
     // Obtain product data from the PRODUCTS object
@@ -98,13 +92,15 @@ function getProductHTML(productId) {
     return productHTML;
 }
 
-// Show all products
+/**
+    Show all products in the application's homepage
+
+    @param    {array} products An array of objects containing all the products to be displayed
+    @returns  No value.
+*/
 function showProducts(products) {
     // Sort products by the number of stars in descending order
     products.sort((product1, product2) => product2.stars - product1.stars);
- 
-    // Select top 3 most reviewed products
-    products = products.slice(0, 3);
 
     // Traverse the products object
     for(let product of products) {
@@ -117,10 +113,7 @@ function showProducts(products) {
            we can use jQuery's chaining feature. 
         */
         productHTML.find(".product-action").
-            text("Add to cart").
-            on("click", addProduct).
-            // Add this data property to identify the product when it is added to the cart
-            data("product-id", product.id);
+            text("Add to cart");
 
         /* Finally, append the cutomized HTML for each product to the products
            container on the webpage */
@@ -128,106 +121,12 @@ function showProducts(products) {
     }
 }
 
-// Adds a product to the cart
-function addProduct() {
-    // Use data property added in the showProducts function to identify the product
-    const productId = $(this).data("product-id");
+/* .ready(): https://api.jquery.com/ready/
+    The .ready() method allow us to run JavaScript code as soon as the page's Document Object Model (DOM)
+    becomes SAFE to manipulate. 
+*/
+$(document).ready(function(){
+    showProducts(Object.values(PRODUCTS));
+});
 
-    CART.push(productId); 
-
-    updateCartTotal();
-}
-
-// Show products in the cart
-function showCart() {
-    // Empty the cart every time it is displayed to ensure with the CART array  
-    $("#products-cart").empty();
-
-    // Traverse the CART array to access all products in the cart
-    for(let i = 0; i < CART.length; i++) {
-
-        // Generate each product's HTML
-        const productHTML = getProductHTML(CART[i]);
-
-        /* Add an id to the product's root HTML element to facilitate its removal
-         when the users removes this product from the cart */
-        productHTML.prop('id', "product-cart-index-" + i);
-
-        // Customize the product's "Remove" button
-        productHTML.find(".product-action").
-            text("Remove").
-            on("click", removeProduct).
-            // Add this data property to identify the product when it is removed from the cart
-            data("product-cart-index", i);
-
-        // Display product images in the cart smaller (50% of their original size)
-        productHTML.find(".card-img-top").addClass("w-50");
-
-        /* Finally, append the cutomized HTML for each product to the cart
-           container on the webpage */
-        $("#products-cart").append(productHTML);
-    }
-
-    // Display empty cart message depending on number of items in the cart
-    if(CART.length == 0) {
-        $("#empty-cart").fadeIn();
-    } else {
-        $("#empty-cart").fadeOut();
-    }
-}
-
-// Removes product from the cart
-function removeProduct() {
-    // Use data property added in the showCart function to identify the product
-    const productCartIndex = $(this).data("product-cart-index");
-
-    CART.splice(productCartIndex, 1);
-
-    updateCartTotal();
-
-    // Use data property added in the showCart function to identify and remove the product
-     $("#product-cart-index-" + productCartIndex).fadeOut(
-         "fast",
-         // After the product fades out, display the entire cart again. 
-         showCart);
-}
-
-// Update cart items indicator at the top of the webpage
-function updateCartTotal() {
-    // Update number of items
-    $("#cart-total").text(CART.length);
-
-    /* Switch the cart icon at the top of the webpage to reflect the cart status:
-       empty or not empty. */
-    if(CART.length == 0) {
-        $("#show-cart").find("i").removeClass("bi-cart-fill").addClass("bi-cart2");   
-    } else {
-        $("#show-cart").find("i").removeClass("bi-cart2").addClass("bi-cart-fill");
-    }
-}
-
-function search() {
-    $("#products").empty();
-
-    const query = $("#searchQuery").val().toLowerCase().trim();
-    const results = [];
-
-    if(query.length > 0) {
-        for(let productId in PRODUCTS) {
-            const product = PRODUCTS[productId];
-
-            if(product.name.toLowerCase().includes(query)
-                || product.description.toLowerCase().includes(query)) {
-
-                results.push(product);
-            }
-        }
-        if(results.length > 0)
-            showProducts(results);
-        else {
-            showProducts(Object.values(PRODUCTS));
-        }
-    } else {
-        showProducts(Object.values(PRODUCTS));
-    }
-}
+})();
