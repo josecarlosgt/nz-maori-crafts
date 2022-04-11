@@ -50,14 +50,11 @@ const CART = [];
 */
 $(document).ready(function(){
 
-    // By default, show top 3 products
-    showProducts(Object.values(PRODUCTS));
+    // By default, show all products
+    showProducts();
 
     // Register event handler for updating the cart when the user clicks the "Cart" button
     $("#show-cart").on("click", showCart);
-
-    // Register event handler for live search when the user types something on the "search" input
-    $("#searchQuery").on("keyup", search);
 });
 
 /* Generates the HTML for displaying one product given its id in the
@@ -85,13 +82,6 @@ function getProductHTML(productId) {
         prop("src", product.image).
         prop("alt", product.name);
 
-     // Customize the product's reviews    
-    const starHTML = productHTML.find(".product-reviews").find("div");
-    for(let starsCounter = 2; starsCounter <= product.stars; starsCounter++) {
-        const newStartHTML = starHTML.clone();
-        productHTML.find(".product-reviews").append(newStartHTML);
-    }
-
     // Remove .d-none to make the product visible
     productHTML.removeClass("d-none");
 
@@ -99,18 +89,17 @@ function getProductHTML(productId) {
 }
 
 // Show all products
-function showProducts(products) {
-    // Sort products by the number of stars in descending order
-    products.sort((product1, product2) => product2.stars - product1.stars);
- 
-    // Select top 3 most reviewed products
-    products = products.slice(0, 3);
-
+function showProducts() {
     // Traverse the products object
-    for(let product of products) {
+    for(let productId in PRODUCTS) {
+        const product = PRODUCTS[productId];
 
         // Generate each product's HTML
         const productHTML = getProductHTML(product.id);
+
+        /* Append the cutomized HTML for each product to the products
+           container on the webpage */
+        $("#products").append(productHTML);
 
         /* Customize the product's "Add to cart" button
            Since we are updating the same object several times, 
@@ -121,10 +110,6 @@ function showProducts(products) {
             on("click", addProduct).
             // Add this data property to identify the product when it is added to the cart
             data("product-id", product.id);
-
-        /* Finally, append the cutomized HTML for each product to the products
-           container on the webpage */
-        $('#products').append(productHTML);
     }
 }
 
@@ -149,9 +134,9 @@ function showCart() {
         // Generate each product's HTML
         const productHTML = getProductHTML(CART[i]);
 
-        /* Add an id to the product's root HTML element to facilitate its removal
-         when the users removes this product from the cart */
-        productHTML.prop('id', "product-cart-index-" + i);
+        /* Append the cutomized HTML for each product to the cart
+           container on the webpage */
+        $("#products-cart").append(productHTML);
 
         // Customize the product's "Remove" button
         productHTML.find(".product-action").
@@ -159,20 +144,6 @@ function showCart() {
             on("click", removeProduct).
             // Add this data property to identify the product when it is removed from the cart
             data("product-cart-index", i);
-
-        // Display product images in the cart smaller (50% of their original size)
-        productHTML.find(".card-img-top").addClass("w-50");
-
-        /* Finally, append the cutomized HTML for each product to the cart
-           container on the webpage */
-        $("#products-cart").append(productHTML);
-    }
-
-    // Display empty cart message depending on number of items in the cart
-    if(CART.length == 0) {
-        $("#empty-cart").fadeIn();
-    } else {
-        $("#empty-cart").fadeOut();
     }
 }
 
@@ -183,51 +154,14 @@ function removeProduct() {
 
     CART.splice(productCartIndex, 1);
 
-    updateCartTotal();
+    // Display the entire cart again
+    showCart();
 
-    // Use data property added in the showCart function to identify and remove the product
-     $("#product-cart-index-" + productCartIndex).fadeOut(
-         "fast",
-         // After the product fades out, display the entire cart again. 
-         showCart);
+    updateCartTotal();
 }
 
 // Update cart items indicator at the top of the webpage
 function updateCartTotal() {
     // Update number of items
     $("#cart-total").text(CART.length);
-
-    /* Switch the cart icon at the top of the webpage to reflect the cart status:
-       empty or not empty. */
-    if(CART.length == 0) {
-        $("#show-cart").find("i").removeClass("bi-cart-fill").addClass("bi-cart2");   
-    } else {
-        $("#show-cart").find("i").removeClass("bi-cart2").addClass("bi-cart-fill");
-    }
-}
-
-function search() {
-    $("#products").empty();
-
-    const query = $("#searchQuery").val().toLowerCase().trim();
-    const results = [];
-
-    if(query.length > 0) {
-        for(let productId in PRODUCTS) {
-            const product = PRODUCTS[productId];
-
-            if(product.name.toLowerCase().includes(query)
-                || product.description.toLowerCase().includes(query)) {
-
-                results.push(product);
-            }
-        }
-        if(results.length > 0)
-            showProducts(results);
-        else {
-            showProducts(Object.values(PRODUCTS));
-        }
-    } else {
-        showProducts(Object.values(PRODUCTS));
-    }
 }
