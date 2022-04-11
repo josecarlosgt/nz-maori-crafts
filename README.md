@@ -1,7 +1,5 @@
 # Workshop #1: Dynamic HTML
-In this workshop, you will learn how to update dynamically the HTML of your web application.
-
-In this workship, we will use the [Shop Homepage](https://startbootstrap.com/template/shop-homepage) template from the [Start Bootstrap website](https://startbootstrap.com/). 
+In this workshop, you will learn how to update dynamically the HTML of your web application. We will use the [Shop Homepage](https://startbootstrap.com/template/shop-homepage) template from the [Start Bootstrap website](https://startbootstrap.com/). 
 
 ## Web Application Overview
 
