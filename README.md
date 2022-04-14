@@ -27,8 +27,6 @@ Add the latest version of jQuery to your application using a Google's CDN:
 
 > Both script tags should appear just before the closing body tag.
 
-On the file js/scripts.js, use the [.ready()](https://api.jquery.com/ready/) method to run JavaScript code safetly as soon as the page's Document Object Model (DOM) become available.
-
 ```javascript
 $(document).ready(function(){
     // YOUR CODE HERE
@@ -183,3 +181,5 @@ $(document).ready(function(){
     showProducts(Object.values(PRODUCTS));
 });
 ```
+
+> The [.ready()](https://api.jquery.com/ready/) method to run JavaScript code safetly as soon as the page's Document Object Model (DOM) become available.
