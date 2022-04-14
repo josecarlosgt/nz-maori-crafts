@@ -3,6 +3,8 @@ In this workshop, you will learn how to update dynamically the HTML of your web 
 
 In this workship, we will use the [Shop Homepage](https://startbootstrap.com/template/shop-homepage) template from the [Start Bootstrap website](https://startbootstrap.com/). 
 
+Download the workshop materials from [here](https://github.com/josecarlosgt/nz-maori-crafts/raw/workshop-1-dynamic-html/nz-handicraft-workshop-1.zip).
+
 ## Web Application Overview
 
 While New Zealand is well-known for its stunning landscapes, travelers often know overlook cultural crafts made by the indigenous people of New Zealand, the Maori. The purpose of this web application is to promote Maori handmade crafts as products available for purchase online.  
