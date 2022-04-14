@@ -25,14 +25,6 @@ Add the latest version of jQuery to your application using a Google's CDN:
 <script src="js/scripts.js"></script>
 ```
 
-> Both script tags should appear just before the closing body tag.
-
-```javascript
-$(document).ready(function(){
-    // YOUR CODE HERE
-});    
-```
-
 ## Task 2: Create a data structure for the products
 
 The following data structure contains all the data of the products promoted by the application:
