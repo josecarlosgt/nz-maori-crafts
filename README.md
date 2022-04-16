@@ -1,7 +1,7 @@
 # Workshop #1: Dynamic HTML
 In this workshop, you will learn how to update dynamically the HTML of your web application.
 
-In this workship, we will use the [Shop Homepage](https://startbootstrap.com/template/shop-homepage) template from the [Start Bootstrap website](https://startbootstrap.com/). 
+In this workshop, we will use the [Shop Homepage](https://startbootstrap.com/template/shop-homepage) template from the [Start Bootstrap website](https://startbootstrap.com/). 
 
 Download the workshop materials from [here](https://github.com/josecarlosgt/nz-maori-crafts/raw/workshop-1-dynamic-html/nz-handicraft-workshop-1.zip).
 
