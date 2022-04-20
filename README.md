@@ -62,8 +62,7 @@ Register `showCart()` as an event handler that responds to user clicks on the ca
 ```javascript
 $(document).ready(function(){
 
-    // By default, show all products
-    showProducts();
+    showProducts(Object.values(PRODUCTS));
 
     // Register event handler for updating the cart when the user clicks the "Cart" button
     $("#show-cart").on("click", showCart);
