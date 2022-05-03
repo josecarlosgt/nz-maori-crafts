@@ -251,7 +251,7 @@
         $("#products").empty();
 
         const query = $("#searchQuery").val().toLowerCase().trim();
-        const results = [];
+        let results = [];
 
         if (query.length > 0) {
             for (let productId in PRODUCTS) {
@@ -263,14 +263,11 @@
                     results.push(product);
                 }
             }
-            if (results.length > 0)
-                showProducts(results);
-            else {
-                showProducts(Object.values(PRODUCTS));
-            }
         } else {
-            showProducts(Object.values(PRODUCTS));
+            results = Object.values(PRODUCTS);
         }
+
+        showProducts(results);
     }
 
     /* .ready(): https://api.jquery.com/ready/
