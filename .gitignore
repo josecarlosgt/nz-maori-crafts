@@ -1,3 +1,4 @@
 *.code-workspace
 *.gslides
 *.DS_Store
+node_modules
