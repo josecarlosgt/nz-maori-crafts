@@ -1,8 +1,8 @@
 # Maori Fine Crafts
 
-This website is a demo simulating an online shope selling authentic Maori handmade crafts from New Zealand.
+This website is a demo simulating an online shop selling authentic Maori handmade crafts from New Zealand.
 
-The site implements backend-as-a-service (BaaS) based on Supabase. The branch [firebase](https://github.com/josecarlosgt/nz-maori-crafts/tree/firebase) contains an implementation of BaaS based on Firebase version 9.7.0.
+The site implements backend-as-a-service (BaaS) based on [Supabase](https://supabase.com/). The branch [firebase](https://github.com/josecarlosgt/nz-maori-crafts/tree/firebase) implements BaaS based on Firebase version 9.7.0.
 
 Supbase uses [PostgreSQL](https://www.postgresql.org/), one of the most popular open-source relational databases. The following link provides access to the data model used by the Maori handicrafts site.
 
