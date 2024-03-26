@@ -1,4 +1,4 @@
-# Workshop #3: Handling Events
+# Web Application Development: Shopping Cart
 In this workshop, we will apply handling user events concepts to our web application.
 
 Download the workshop materials from [here](https://github.com/josecarlosgt/nz-maori-crafts/raw/workshop-3-handling-events/nz-handicraft-workshop-3.zip).
